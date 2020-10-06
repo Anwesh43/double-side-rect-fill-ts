@@ -27,3 +27,38 @@ class ScaleUtil {
         return Math.sin(scale * Math.PI)
     }
 }
+
+class DrawingUtil {
+
+    static drawLine(context : CanvasRenderingContext2D, x1 : number, y1 : number, x2 : number, y2 : number) {
+        context.beginPath()
+        context.moveTo(x1, y1)
+        context.lineTo(x2, y2)
+        context.stroke()
+    }
+
+    static drawDoubleSideRectFill(context : CanvasRenderingContext2D, scale : number) {
+        const sf : number = ScaleUtil.sinify(scale)
+        const sf3 : number = ScaleUtil.divideScale(sf, 2, parts)
+        const gap : number = Math.min(w, h) / sizeFactor 
+        context.save()
+        context.translate(0, h / 2)
+        for (var j = 0; j < 2; j++) {
+            const sfj : number = ScaleUtil.divideScale(sf, j, parts)
+            context.save()
+            context.translate(0, -gap / 2 + gap * j)
+            DrawingUtil.drawLine(context, 0, 0, w * 0.5 * sfj, 0)
+            context.restore()
+        }
+        context.fillRect(w * 0.5, -gap / 2, w * 0.5 * sf3, gap)
+        context.restore()
+    }
+
+    static drawDSRNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        context.lineCap = 'round'
+        context.lineWidth = Math.min(w, h) / strokeFactor 
+        context.fillStyle = colors[i]
+        context.strokeStyle = colors[i]
+        DrawingUtil.drawDoubleSideRectFill(context, scale)
+    }
+}
