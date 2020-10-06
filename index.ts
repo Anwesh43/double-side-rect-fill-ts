@@ -203,3 +203,25 @@ class DoubleSideRectFill {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    dsr : DoubleSideRectFill = new DoubleSideRectFill()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.dsr.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.dsr.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.dsr.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
