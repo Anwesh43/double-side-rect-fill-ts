@@ -80,7 +80,7 @@ class Stage {
     render() {
         this.context.fillStyle = backColor 
         this.context.fillRect(0, 0, w, h)
-        this.renderer = new Renderer()
+        this.renderer.render(this.context)
     }
 
     handleTap() {
@@ -107,6 +107,7 @@ class State {
 
     update(cb : Function) {
         this.scale += scGap * this.dir 
+        console.log(this.scale)
         if (Math.abs(this.scale - this.prevScale) > 1) {
             this.scale = this.prevScale + this.dir 
             this.dir = 0 
